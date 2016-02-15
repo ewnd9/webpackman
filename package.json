@@ -1,7 +1,7 @@
 {
   "name": "webpackman",
   "version": "0.1.0",
-  "description": "Reduce webpack workflow to 2 scripts: \"wbuild\" and \"wserve\"",
+  "description": "Reduce webpack workflow to 2 scripts: wbuild and wserve",
   "main": "index.js",
   "scripts": {},
   "bin": {
@@ -29,6 +29,7 @@
     "minimist": "^1.2.0",
     "postcss-loader": "^0.8.1",
     "raw-loader": "^0.5.1",
+    "script-loader": "^0.6.1",
     "style-loader": "^0.12.3",
     "url-loader": "^0.5.6",
     "webpack": "^1.12.13",

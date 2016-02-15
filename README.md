@@ -1,14 +1,27 @@
 # webpackman
 
-Reduce webpack workflow to 2 scripts: "wbuild" and "wserve"
+[WIP] Reduce webpack workflow to 2 scripts: "wbuild" and "wserve"
 
 ## Install
 
 ```
 $ npm install webpackman -D
+$ npm install babel-core babel-preset-es2015 babel-preset-react babel-preset-react-hmre babel-preset-stage-0 -D
 ```
 
 ## Usage
+
+```json
+// .babelrc
+{
+  "presets": ["es2015", "stage-0", "react"],
+  "env": {
+    "development": {
+      "presets": ["react-hmre"]
+    }
+  }
+}
+```
 
 ```json
 // package.json
@@ -73,11 +86,14 @@ const config = require('webpackman/webpack.config.prod.js')
 module.exports = config;
 ```
 
-
-
 ## Changelog
 
 `v0.1.0` - initial version with my opinionated react config  
+
+## Used in
+
+- [ewnd9/media-center](https://github.com/ewnd9/media-center) ([migration commit](https://github.com/ewnd9/media-center/commit/960587f1488747876b9b9a4f560b74f250eaa6ea))
+- [ewnd9/the-feed](https://github.com/ewnd9/the-feed) ([migration commit](https://github.com/ewnd9/the-feed/commit/b601e02e3d056e5f67ef4bb8ebb3700ac149c099))
 
 ## License
 
