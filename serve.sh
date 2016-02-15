@@ -2,13 +2,9 @@
 
 config="node_modules/webpackman/webpack.config.js"
 
-while (( "$#" )); do
-  if [ "$1" == "--config" ]; then
-    shift
-    config="$1"
-  fi
+if [ "$1" == "--config" ]; then
+  config="$2"
+  shift 2
+fi
 
-  shift
-done
-
-node_modules/.bin/webpack-dev-server --config "$config"
+node_modules/.bin/webpack-dev-server --config "$config" "$@"

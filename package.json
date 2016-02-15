@@ -26,6 +26,7 @@
     "html-webpack-plugin": "^1.6.0",
     "image-loader": "0.0.1",
     "imports-loader": "^0.6.5",
+    "minimist": "^1.2.0",
     "postcss-loader": "^0.8.1",
     "raw-loader": "^0.5.1",
     "style-loader": "^0.12.3",

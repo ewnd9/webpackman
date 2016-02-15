@@ -36,12 +36,24 @@ src
 
 ## Override default config
 
+### Via arguments
+
+```
+$ wbuild --x-entry lib/entry.js
+$ wbuild --x-html lib/index.html
+$ wbuild --x-dist output
+```
+
+### Programmatically
+
 You need to add `--config` argument to `wserve` and `wbuild`.
 
 ```
 $ wbuild --config config.prod.js
 $ wserve --config config.dev.js
 ```
+
+:warning: `--config <file>` should be always first if presented
 
 ```js
 // config.dev.js

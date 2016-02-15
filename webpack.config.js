@@ -3,17 +3,22 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var autoprefixer = require('autoprefixer');
 
+var argv = require('minimist')(process.argv.slice(2));
 var cwd = process.cwd();
+
+var entry = path.join(cwd, argv['x-entry'] || 'src/index.js');
+var html = path.join(cwd, argv['x-html'] || 'src/index.html');
+var output = path.join(cwd, argv['x-dist'] || 'dist');
 
 module.exports = {
   entry: {
-    app: './src/index.js'
+    app: entry
   },
   devtool: 'cheap-module-source-map',
   output: {
     filename: '[name].bundle.js',
     sourceMapFilename: '[file].map',
-    path: path.join(cwd, 'dist'),
+    path: output,
     publicPath: '/'
   },
   resolve: {
@@ -37,7 +42,8 @@ module.exports = {
         loader: 'file?name=[name].[ext]',
       },
       {
-        test: /(\/src\/[\w]+\.css$)|(\/node_modules\/.+\.css$)/,
+        test: /\.css$/,
+        exclude: /components/,
         loaders: [
           'style-loader',
           'css-loader',
@@ -45,7 +51,8 @@ module.exports = {
         ]
       },
       {
-        test: /\/components\/.+\.css$/,
+        test: /\.css$/,
+        include: /components/,
         loaders: [
           'style-loader',
           'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
@@ -65,7 +72,7 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
-      template: path.join(cwd, 'src', 'index.html'),
+      template: html,
       inject: 'body'
     }),
     new webpack.DefinePlugin({
@@ -77,7 +84,7 @@ module.exports = {
   ],
   postcss: [autoprefixer],
   devServer: {
-    contentBase: path.join(cwd, 'dist'),
+    contentBase: output,
     noInfo: true,
     hot: true,
     inline: true,
