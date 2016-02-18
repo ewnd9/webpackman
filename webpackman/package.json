@@ -1,0 +1,40 @@
+{
+  "name": "webpackman",
+  "version": "0.2.0",
+  "description": "Reduce webpack workflow to 2 scripts: wbuild and wserve",
+  "main": "index.js",
+  "scripts": {},
+  "bin": {
+    "wserve": "serve.js",
+    "wbuild": "build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ewnd9/webpackman.git"
+  },
+  "keywords": [
+    "webpack"
+  ],
+  "author": "ewnd9 <ewndnine@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "autoprefixer": "^6.3.3",
+    "babel-core": "^6.5.2",
+    "babel-loader": "^6.2.2",
+    "css-loader": "^0.15.4",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.8.5",
+    "html-webpack-plugin": "^1.6.0",
+    "image-loader": "0.0.1",
+    "imports-loader": "^0.6.5",
+    "minimist": "^1.2.0",
+    "postcss-loader": "^0.8.1",
+    "raw-loader": "^0.5.1",
+    "script-loader": "^0.6.1",
+    "style-loader": "^0.12.3",
+    "url-loader": "^0.5.6",
+    "webpack": "^1.12.13",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "devDependencies": {}
+}
