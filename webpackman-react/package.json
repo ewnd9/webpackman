@@ -1,5 +1,5 @@
 {
-  "name": "webpackman",
+  "name": "webpackman-react",
   "version": "0.1.1",
   "description": "Reduce webpack workflow to 2 scripts: wbuild and wserve",
   "main": "index.js",
