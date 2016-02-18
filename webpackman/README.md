@@ -6,20 +6,13 @@
 
 ```
 $ npm install webpackman -D
-$ npm install babel-core babel-preset-es2015 babel-preset-react babel-preset-react-hmre babel-preset-stage-0 -D
+$ npm install babel-preset-es2015 babel-preset-stage-0 -D
 ```
-
-## Usage
 
 ```json
 // .babelrc
 {
-  "presets": ["es2015", "stage-0", "react"],
-  "env": {
-    "development": {
-      "presets": ["react-hmre"]
-    }
-  }
+  "presets": ["es2015", "stage-0"]
 }
 ```
 
@@ -31,6 +24,13 @@ $ npm install babel-core babel-preset-es2015 babel-preset-react babel-preset-rea
     "build": "NODE_ENV=production rm -rf dist && wbuild"
   }
 }
+```
+
+## Usage
+
+```
+$ npm start # open localhost:8080
+$ npm run build # content will be in the dist folder
 ```
 
 `webpackman` assumes you have a following structure
