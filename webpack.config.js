@@ -9,10 +9,12 @@ var cwd = process.cwd();
 var entry = path.join(cwd, argv['x-entry'] || 'src/index.js');
 var html = path.join(cwd, argv['x-html'] || 'src/index.html');
 var output = path.join(cwd, argv['x-dist'] || 'dist');
+var vendors = argv['x-vendors'] && argv['x-vendors'].split(',') || [];
 
 module.exports = {
   entry: {
-    app: entry
+    app: entry,
+    vendors: vendors
   },
   devtool: 'cheap-module-source-map',
   output: {

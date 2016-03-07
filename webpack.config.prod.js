@@ -14,6 +14,7 @@ var prodPlugins = config.plugins.reduce((total, curr) => {
   return total;
 }, [
   new webpack.optimize.OccurenceOrderPlugin(),
+  new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.[hash].js'),
   new ExtractTextPlugin('styles.css', '[name].[contenthash].css')
 ]).concat([
   new webpack.optimize.UglifyJsPlugin({

@@ -55,6 +55,7 @@ src
 $ wbuild --x-entry lib/entry.js
 $ wbuild --x-html lib/index.html
 $ wbuild --x-dist output
+$ wbuild --x-vendors react,other-dep
 ```
 
 ### Programmatically
