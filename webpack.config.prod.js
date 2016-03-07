@@ -1,6 +1,10 @@
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+if (typeof process.env.NODE_ENV === 'undefined') {
+  process.env.NODE_ENV = 'production';
+}
+
 var config = require(__dirname + '/webpack.config');
 
 config.devtool = 'source-map';

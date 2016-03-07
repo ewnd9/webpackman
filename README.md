@@ -21,7 +21,7 @@ $ npm install babel-preset-es2015 babel-preset-stage-0 -D
 {
   "scripts": {
     "start": "wserve",
-    "build": "NODE_ENV=production rm -rf dist && wbuild"
+    "build": "rm -rf dist && wbuild"
   }
 }
 ```
