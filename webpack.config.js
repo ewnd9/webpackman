@@ -47,8 +47,7 @@ module.exports = {
         exclude: /components/,
         loaders: [
           'style-loader',
-          'css-loader',
-          'postcss-loader'
+          'css-loader!postcss-loader'
         ]
       },
       {
@@ -56,8 +55,7 @@ module.exports = {
         include: /components/,
         loaders: [
           'style-loader',
-          'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
-          'postcss-loader'
+          'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
         ]
       },
       { test: /\.png$/, loader: 'url-loader?limit=100000' },
