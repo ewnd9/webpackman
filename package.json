@@ -8,6 +8,12 @@
     "wserve": "serve.js",
     "wbuild": "build.js"
   },
+  "files": [
+    "build.js",
+    "serve.js",
+    "webpack.config.js",
+    "webpack.config.prod.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ewnd9/webpackman.git"

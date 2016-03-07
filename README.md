@@ -71,7 +71,7 @@ $ wserve --config config.dev.js
 
 ```js
 // config.dev.js
-const config = require('webpackman/webpack.config.dev.js')
+const config = require('webpackman/webpack.config.js')
 // ...
 // modify config
 // ...
