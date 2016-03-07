@@ -1,4 +1,8 @@
+@import '../../variables.css';
+
 .container {
+  background-color: var(--greyColor);
+  
   width: 100%;
   height: 100%;
 
