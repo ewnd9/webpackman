@@ -1,7 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var autoprefixer = require('autoprefixer');
 
 var argv = require('minimist')(process.argv.slice(2));
 var cwd = process.cwd();
@@ -84,7 +83,15 @@ module.exports = {
       },
     })
   ],
-  postcss: [autoprefixer],
+  postcss: function(webpack) {
+    return [
+      require('autoprefixer'),
+      require('postcss-import')({
+        addDependencyTo: webpack
+      }),
+      require('postcss-cssnext')
+    ];
+  },
   devServer: {
     contentBase: output,
     noInfo: true,
