@@ -31,9 +31,8 @@ var prodPlugins = config.plugins.reduce((total, curr) => {
 config.plugins = prodPlugins;
 
 var prodLoaders = config.module.loaders.reduce((total, curr) => {
-  if (curr.loaders && curr.loaders[0] === 'style-loader') {
-    curr.loader = ExtractTextPlugin.extract.apply(ExtractTextPlugin, curr.loaders);
-    curr.loaders = undefined;
+  if (curr.loader && curr.loader.indexOf('style-loader') > -1) {
+    curr.loader = ExtractTextPlugin.extract.call(ExtractTextPlugin, curr.loader);
   }
 
   total.push(curr);

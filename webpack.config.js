@@ -45,18 +45,12 @@ module.exports = {
       {
         test: /\.css$/,
         exclude: /components/,
-        loaders: [
-          'style-loader',
-          'css-loader!postcss-loader'
-        ]
+        loader: 'style-loader!css-loader!postcss-loader'
       },
       {
         test: /\.css$/,
         include: /components/,
-        loaders: [
-          'style-loader',
-          'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
-        ]
+        loader: 'style-loader!css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
       },
       { test: /\.png$/, loader: 'url-loader?limit=100000' },
       { test: /\.jpg$/, loader: 'file-loader' },
