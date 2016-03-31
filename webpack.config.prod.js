@@ -32,7 +32,8 @@ config.plugins = prodPlugins;
 
 var prodLoaders = config.module.loaders.reduce((total, curr) => {
   if (curr.loader && curr.loader.indexOf('style-loader') > -1) {
-    curr.loader = ExtractTextPlugin.extract.call(ExtractTextPlugin, curr.loader);
+    var data = curr.loader.split('!');
+    curr.loader = ExtractTextPlugin.extract('style-loader', data.slice(1).join('!'));
   }
 
   total.push(curr);
