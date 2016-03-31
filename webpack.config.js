@@ -9,6 +9,7 @@ var entry = path.join(cwd, argv['x-entry'] || 'src/index.js');
 var html = path.join(cwd, argv['x-html'] || 'src/index.html');
 var output = path.join(cwd, argv['x-dist'] || 'dist');
 var vendors = argv['x-vendors'] && argv['x-vendors'].split(',') || [];
+var publicPath = argv['x-public-path'] || '/';
 
 module.exports = {
   entry: {
@@ -20,7 +21,7 @@ module.exports = {
     filename: '[name].bundle.js',
     sourceMapFilename: '[file].map',
     path: output,
-    publicPath: '/'
+    publicPath: publicPath
   },
   resolve: {
     root: [
