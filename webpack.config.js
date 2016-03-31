@@ -63,6 +63,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.NoErrorsPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: html,

@@ -87,6 +87,14 @@ const config = require('webpackman/webpack.config.prod.js')
 module.exports = config;
 ```
 
+## Profiling
+
+### `--display-modules`
+
+```
+$ node_modules/.bin/webpack --config node_modules/webpackman/webpack.config.js --display-modules -v
+```
+
 ## Changelog
 
 `v0.1.0` - initial version with my opinionated react config  
