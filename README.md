@@ -33,19 +33,12 @@ $ npm start # open localhost:8080
 $ npm run build # content will be in the dist folder
 ```
 
-`webpackman` assumes you have a following structure
+## css-modules
 
-```
-src
-│ index.js
-| *.css (will be loaded as global css)
-└─components
-  |    
-  └─component-name
-    |
-    └─component-name.js
-      *.css (will be loaded as css-module)
-```
+css files which have `components` directory in their path will be loaded as `css-modules`
+
+- `**/style.css` - generic css
+- `**/components/**/*.css` - `css-modules`
 
 ## Override default config
 
@@ -58,6 +51,8 @@ $ wbuild --x-dist output
 $ wbuild --x-vendors react,other-dep
 $ wbuild --x-public-path "/path/"
 ```
+
+The `--x-` prefix is for the preventing collisions with `webpack`'s arguments
 
 ### Programmatically
 
@@ -86,14 +81,6 @@ const config = require('webpackman/webpack.config.prod.js')
 // modify config
 // ...
 module.exports = config;
-```
-
-## Profiling
-
-### `--display-modules`
-
-```
-$ node_modules/.bin/webpack --config node_modules/webpackman/webpack.config.js --display-modules -v
 ```
 
 ## Changelog
