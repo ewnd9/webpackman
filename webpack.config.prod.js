@@ -1,16 +1,18 @@
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+'use strict';
 
 if (typeof process.env.NODE_ENV === 'undefined') {
   process.env.NODE_ENV = 'production';
 }
 
-var config = require(__dirname + '/webpack.config');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const config = require(__dirname + '/webpack.config');
 
 config.devtool = 'source-map';
 config.output.filename = '[name].bundle.[hash].js';
 
-var prodPlugins = config.plugins.reduce((total, curr) => {
+const prodPlugins = config.plugins.reduce((total, curr) => {
   if (!(curr instanceof webpack.HotModuleReplacementPlugin)) {
     total.push(curr);
   }
@@ -30,9 +32,9 @@ var prodPlugins = config.plugins.reduce((total, curr) => {
 
 config.plugins = prodPlugins;
 
-var prodLoaders = config.module.loaders.reduce((total, curr) => {
+const prodLoaders = config.module.loaders.reduce((total, curr) => {
   if (curr.loader && curr.loader.indexOf('style-loader') > -1) {
-    var data = curr.loader.split('!');
+    let data = curr.loader.split('!');
     curr.loader = ExtractTextPlugin.extract('style-loader', data.slice(1).join('!'));
   }
 

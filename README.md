@@ -1,12 +1,31 @@
 # webpackman
 
-[WIP] Reduce webpack workflow to 2 scripts: "wbuild" and "wserve"
+Shared webpack config files.
 
 ## Install
 
+```sh
+$ npm install webpackman babel-preset-es2015 babel-preset-stage-0 -D
 ```
-$ npm install webpackman -D
-$ npm install babel-preset-es2015 babel-preset-stage-0 -D
+
+```js
+// webpack.config.js
+module.exports = require('webpackman/webpack.config');
+```
+
+```js
+// webpack.config.prod.js
+module.exports = require('webpackman/webpack.config.prod');
+```
+
+```json
+// package.json
+{
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "rm -rf dist && webpack --config webpack.config.prod.js"
+  }
+}
 ```
 
 ```json
@@ -16,94 +35,51 @@ $ npm install babel-preset-es2015 babel-preset-stage-0 -D
 }
 ```
 
-```json
-// package.json
-{
-  "scripts": {
-    "start": "wserve",
-    "build": "rm -rf dist && wbuild"
-  }
-}
-```
-
 ## Usage
 
-```
-$ npm start # open localhost:8080
-$ npm run build # content will be in the dist folder
-```
-
-`webpackman` assumes you have a following structure
-
-```
-src
-│ index.js
-| *.css (will be loaded as global css)
-└─components
-  |    
-  └─component-name
-    |
-    └─component-name.js
-      *.css (will be loaded as css-module)
+```sh
+$ npm start # start dev-server at localhost:8080
+$ npm run build # build to the dist folder
 ```
 
-## Override default config
+## Loaders
 
-### Via arguments
+### `.js`
 
-```
-$ wbuild --x-entry lib/entry.js
-$ wbuild --x-html lib/index.html
-$ wbuild --x-dist output
-$ wbuild --x-vendors react,other-dep
-$ wbuild --x-public-path "/path/"
-```
+[`babel-loader`](https://github.com/babel/babel-loader)
 
-### Programmatically
+### `.css`
 
-You need to add `--config` argument to `wserve` and `wbuild`.
+css files which have `components` directory in their path will be loaded as [`css-modules`](https://github.com/css-modules/css-modules)
 
-```
-$ wbuild --config config.prod.js
-$ wserve --config config.dev.js
-```
+- `**/style.css` - generic css
+- `**/components/**/*.css` - `css-modules`
 
-:warning: `--config <file>` should be always first if presented
+### `.html`, `.png`, `.jpeg`, `.gif`, `.json`, `.woff2`, `.ttf`, `.eot`, `.svg`
 
-```js
-// config.dev.js
-const config = require('webpackman/webpack.config.js')
-// ...
-// modify config
-// ...
-module.exports = config;
-```
-
-```js
-// config.prod.js
-const config = require('webpackman/webpack.config.prod.js')
-// ...
-// modify config
-// ...
-module.exports = config;
-```
-
-## Profiling
-
-### `--display-modules`
-
-```
-$ node_modules/.bin/webpack --config node_modules/webpackman/webpack.config.js --display-modules -v
-```
+static loaders
 
 ## Changelog
 
-`v0.1.0` - initial version with my opinionated react config  
+- [`v0.6.0`](https://github.com/ewnd9/webpackman/tree/v0.6.0) - replace overriding logic, add the reverse command
+- [`v0.5.0`](https://github.com/ewnd9/webpackman/tree/v0.5.0) - add x-public-path
+- [`v0.1.0`](https://github.com/ewnd9/webpackman/tree/v0.1.0) - initial version with my opinionated react config  
 
 ## Used in
 
 - [ewnd9/media-center](https://github.com/ewnd9/media-center) ([migration commit](https://github.com/ewnd9/media-center/commit/960587f1488747876b9b9a4f560b74f250eaa6ea))
 - [ewnd9/the-feed](https://github.com/ewnd9/the-feed) ([migration commit](https://github.com/ewnd9/the-feed/commit/b601e02e3d056e5f67ef4bb8ebb3700ac149c099))
+
+## Tests
+
+```js
+$ npm test
+$ NODE_ENV=test-update npm test # update screenshots
+```
+
+## Related
+
+- [create-react-app](https://github.com/facebookincubator/create-react-app)
 
 ## License
 

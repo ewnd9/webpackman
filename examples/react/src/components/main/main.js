@@ -5,7 +5,7 @@ export default React.createClass({
   render() {
     return (
       <div className={styles.container}>
-        <div>Hello World!</div>
+        <div>Hello World</div>
       </div>
     );
   }
