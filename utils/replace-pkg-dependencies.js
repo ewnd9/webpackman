@@ -15,6 +15,7 @@ module.exports = function(_pkg) {
     }
   });
 
+  delete pkg.devDependencies['webpackman'];
   pkg.devDependencies = sortedObject(pkg.devDependencies);
 
   return pkg;

@@ -1,23 +1,25 @@
 'use strict';
 
-var shellUtils = require('shell-quote');
-var minimist = require('minimist');
-var clone = require('clone');
+const shellUtils = require('shell-quote');
+const minimist = require('minimist');
+const clone = require('clone');
 
 module.exports = function(_pkg) {
-  var pkg = clone(_pkg);
-  var args = {};
+  const pkg = clone(_pkg);
+  const args = {};
 
-  Object.keys(pkg.scripts).forEach(function(key) {
-    var script = pkg.scripts[key];
-    var result = replaceScript(script, 'wbuild', ['webpack', '-c', 'webpack.config.js']);
+  Object
+    .keys(pkg.scripts)
+    .forEach(function(key) {
+      const script = pkg.scripts[key];
+      const result = replaceScript(script, 'wbuild', ['webpack', '--config', 'webpack.config.prod.js']);
 
-    if (result) {
-      pkg.scripts[key] = result.script;
-      args[result.args._] = result.args;
-      delete result.args._;
-    }
-  });
+      if (result) {
+        pkg.scripts[key] = result.script;
+        args[result.args._] = result.args;
+        delete result.args._;
+      }
+    });
 
   return {
     pkg: pkg,

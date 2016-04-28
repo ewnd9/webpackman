@@ -1,24 +1,45 @@
 'use strict';
 
-var clone = require('clone');
-var replaceScripts = require('./utils/replace-pkg-scripts');
+const path = require('path');
+const clone = require('clone');
+const diff = require('object-diff');
+const fs = require('fs');
+const chalk = require('chalk');
 
-var pkg0 = require(process.cwd() + '/package.json');
-var old = clone(pkg0);
+const replaceScripts = require('./utils/replace-pkg-scripts');
+const replaceDependencies = require('./utils/replace-pkg-dependencies');
 
-var result = replaceScripts(pkg0);
+const pkgPath = process.cwd() + '/package.json';
 
-var pkg = result.pkg;
-var args = result.args;
+const pkg0 = require(pkgPath);
+const old = clone(pkg0);
 
-var diff = require('object-diff');
-var res = diff(old.scripts, pkg.scripts);
+const result = replaceScripts(pkg0);
 
-var chalk = require('chalk');
+const _pkg = result.pkg;
+const pkg = replaceDependencies(_pkg);
 
-console.log(chalk.green('scripts\n'));
+printDiff(pkg, old, 'scripts');
+printDiff(pkg, old, 'devDependencies');
 
-Object.keys(res).forEach(function(key) {
-  console.log(chalk.red('- \"' + key + '\"', old.scripts[key]));
-  console.log(chalk.green('+ \"' + key + '\"', res[key]));
+fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n', 'utf-8');
+
+['webpack.config.js', 'webpack.config.prod.js'].forEach(file => {
+  fs.createReadStream(path.resolve(__dirname, file)).pipe(fs.createWriteStream(path.resolve(process.cwd(), file)));
 });
+
+function printDiff(obj1, obj2, property) {
+  console.log(`${chalk.green(property)}:`);
+
+  const res = diff(obj1[property], obj2[property]);
+
+  Object.keys(res).forEach(function(key) {
+    if (obj2[property][key]) {
+      console.log(chalk.red('- \"' + key + '\"', obj2[property][key]));
+    }
+
+    if (obj1[property][key]) {
+      console.log(chalk.green('+ \"' + key + '\"', obj1[property][key]));
+    }
+  });
+}

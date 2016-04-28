@@ -16,18 +16,7 @@ module.exports = function(dir) {
   const root = `${dir}/dist`;
 
   return mkdirp(dest)
-    .then(() => {
-      console.log(`${dir} npm install`);
-      return execa('npm', ['install'], { cwd: dir });
-    })
-    .then(() => {
-      console.log(`${dir} npm install ${path.resolve(__dirname, '..')} -D`);
-      return execa('npm', ['install', path.resolve(__dirname, '..'), '-D'], { cwd: dir });
-    })
-    .then(() => {
-      console.log(`${dir} npm run build`);
-      return execa('npm', ['run', 'build'], { cwd: dir });
-    })
+    .then(() => npmInstallAndBuild(dir))
     .then(() => {
       console.log(`${dir} pageres`);
       const server = http.createServer(
@@ -43,3 +32,17 @@ module.exports = function(dir) {
         });
     });
 };
+
+const npmInstallAndBuild = module.exports.npmInstallAndBuild = function(dir) {
+  console.log(`${dir} npm install`);
+
+  return execa('npm', ['install'], { cwd: dir })
+    .then(() => {
+      console.log(`${dir} npm install ${path.resolve(__dirname, '..', '..')}`);
+      return execa('npm', ['install', path.resolve(__dirname, '..', '..')], { cwd: dir });
+    })
+    .then(() => {
+      console.log(`${dir} npm run build`);
+      return execa('npm', ['run', 'build'], { cwd: dir });
+    });
+}
