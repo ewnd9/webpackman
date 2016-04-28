@@ -3,7 +3,9 @@
   "version": "0.5.0",
   "description": "Reduce webpack workflow to 2 scripts: wbuild and wserve",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "generate-screenshots": "node utils/generate-screenshots-cli"
+  },
   "bin": {
     "wserve": "serve.js",
     "wbuild": "build.js"
@@ -50,6 +52,15 @@
     "webpack-dev-server": "^1.14.1"
   },
   "devDependencies": {
-    "ava": "^0.14.0"
+    "ava": "^0.14.0",
+    "ecstatic": "^1.4.0",
+    "execa": "^0.4.0",
+    "hasha": "^2.2.0",
+    "image-diff": "^1.5.1",
+    "mkdirp": "^0.5.1",
+    "ncp": "^2.0.0",
+    "pageres": "^4.1.1",
+    "phantomjs-prebuilt": "^2.1.7",
+    "pify": "^2.3.0"
   }
 }
