@@ -9,40 +9,81 @@ const execa = require('execa');
 
 const Pageres = require('pageres');
 
-module.exports = function(dir) {
+const ncp = pify(require('ncp'));
+const rimraf = pify(require('rimraf'));
+
+const fs = require('fs');
+const readFile = pify(fs.readFile);
+const writeFile = pify(fs.writeFile);
+
+
+function genScreens(dir) {
   const dest = `${dir}/screenshots`;
+
   const port = 8080;
+  const useServer = true;
+
   const address = `http://localhost:${port}/`;
   const root = `${dir}/dist`;
 
+  let server;
+
   return mkdirp(dest)
-    .then(() => npmInstallAndBuild(dir))
     .then(() => {
       console.log(`${dir} pageres`);
-      const server = http.createServer(
-        ecstatic({ root })
-      ).listen(port);
+
+      if (useServer) {
+        server = http.createServer(ecstatic({ root })).listen(port);
+      }
+
+      console.log(address);
 
       return new Pageres({ delay: 2 })
         .src(address, ['1024x768'])
         .dest(dest)
+        .on('warn', str => console.log(str))
+        .on('err', str => console.log(str))
         .run()
         .then(() => {
-          server.close();
+          if (useServer) {
+            server.close();
+          }
         });
     });
 };
 
-const npmInstallAndBuild = module.exports.npmInstallAndBuild = function(dir) {
+function npmInstall(dir) {
   console.log(`${dir} npm install`);
+  return execa('npm', ['--cache-min', '9999999', 'install'], { cwd: dir });
+}
 
-  return execa('npm', ['install'], { cwd: dir })
+function npmBuild(dir) {
+  console.log(`${dir} npm run build`);
+  return execa('npm', ['run', 'build'], { cwd: dir });
+}
+
+function cpAndClean(sample, dest) {
+  return ncp(sample, dest)
     .then(() => {
-      console.log(`${dir} npm install ${path.resolve(__dirname, '..', '..')}`);
-      return execa('npm', ['install', path.resolve(__dirname, '..', '..')], { cwd: dir });
-    })
-    .then(() => {
-      console.log(`${dir} npm run build`);
-      return execa('npm', ['run', 'build'], { cwd: dir });
+      console.log(`${dest} rm node_modules|dist|screenshots`);
+
+      return Promise.all([
+        rimraf(`${dest}/node_modules`),
+        rimraf(`${dest}/dist`),
+        rimraf(`${dest}/screenshots`),
+        readFile(`${dest}/package.json`)
+          .then(data => {
+            const pkg = JSON.parse(data);
+            pkg.devDependencies.webpackman = `file://${path.resolve(__dirname, '..', '..')}`;
+            return writeFile(`${dest}/package.json`, JSON.stringify(pkg, null, 2));
+          })
+      ]); // ¯\_(ツ)_/¯
     });
 }
+
+exports.genScreens = genScreens;
+
+exports.npmInstall = npmInstall;
+exports.npmBuild = npmBuild;
+
+exports.cpAndClean = cpAndClean;
