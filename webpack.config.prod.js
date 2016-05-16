@@ -42,4 +42,5 @@ var prodLoaders = config.module.loaders.reduce((total, curr) => {
 
 config.module.loaders = prodLoaders;
 
+require('./scripts/utils/override-object-properties')(config);
 module.exports = config;

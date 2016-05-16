@@ -44,7 +44,9 @@ function removeOverriderCall(ast, j) {
   ast
     .find(j.CallExpression, {
       callee: function(node) {
-        return node.callee && node.callee.name === 'require';
+        return node.callee && node.callee.name === 'require' &&
+               node.arguments && node.arguments[0] &&
+               node.arguments[0].rawValue === './scripts/utils/override-object-properties';
       }
     })
     .forEach(p => {

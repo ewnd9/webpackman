@@ -1,5 +1,5 @@
 import test from 'ava';
-import replacePkgScripts from '../utils/replace-pkg-scripts';
+import replacePkgScripts from '../scripts/utils/replace-pkg-scripts';
 
 test('replace pkg scripts', t => {
   const pkg0 = {

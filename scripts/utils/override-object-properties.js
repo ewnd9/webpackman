@@ -5,8 +5,12 @@ var cwd = process.cwd();
 
 var overrider = require('./overrider');
 
-module.exports = function(config, argv) {
-  var queries = Array.isArray(argv) ? argv : [argv];
+module.exports = function(config, queries) {
+  if (!queries) {
+    var argv = require('minimist')(process.argv.slice(2))['x-override'] || [];
+    queries = Array.isArray(argv) ? argv : [argv];
+  }
+
   overrider(queries, overridePlugin.bind(null, config), overrideProperty.bind(null, config));
 };
 
@@ -14,7 +18,7 @@ function overridePlugin(config, plugin, property, value, str) {
   var pluginObj = config.plugins.find(p => Object.getPrototypeOf(p).constructor.name === plugin);
 
   if (plugin === 'HtmlWebpackPlugin') {
-    plugin.options[property] = getValue(value);
+    pluginObj.options[property] = getValue(value);
   } else {
     throw new Error(pluginFnName + ' overriding is not avaliable right now')
   }
@@ -42,5 +46,11 @@ function overrideProperty(config, path, value, str) {
 }
 
 function getValue(value) {
-  return value.indexOf('./') === 0 ? path.resolve(cwd, value) : value;
+  if (value.indexOf('./') === 0) {
+    return path.resolve(cwd, value);
+  } else if (value.indexOf('[') === 0) {
+    return value.slice(1, value.length - 1).split(',');
+  } else {
+    return value;
+  }
 }

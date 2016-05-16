@@ -2,7 +2,9 @@
 
 var clone = require('clone');
 var sortedObject = require('sorted-object');
-var originalPkg = require(__dirname + '/../package.json');
+
+var path = require('path');
+var originalPkg = require(path.resolve(__dirname, '..', '..', 'package.json'));
 
 module.exports = function(_pkg) {
   var pkg = clone(_pkg);

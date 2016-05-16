@@ -1,5 +1,5 @@
 import test from 'ava';
-import replacePkgDependencies from '../utils/replace-pkg-dependencies';
+import replacePkgDependencies from '../scripts/utils/replace-pkg-dependencies';
 
 test('replace pkg dependencies', t => {
   const pkg0 = {

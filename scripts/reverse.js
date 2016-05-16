@@ -9,12 +9,17 @@ const chalk = require('chalk');
 const replaceScripts = require('./utils/replace-pkg-scripts');
 const replaceDependencies = require('./utils/replace-pkg-dependencies');
 
+const codemod = require('./utils/codemod-file');
+
 const pkgPath = process.cwd() + '/package.json';
 
 const pkg0 = require(pkgPath);
 const old = clone(pkg0);
 
 const result = replaceScripts(pkg0);
+
+const pify = require('pify');
+const ncp = pify(require('ncp'));
 
 const _pkg = result.pkg;
 const pkg = replaceDependencies(_pkg);
@@ -24,9 +29,23 @@ printDiff(pkg, old, 'devDependencies');
 
 fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n', 'utf-8');
 
-['webpack.config.js', 'webpack.config.prod.js'].forEach(file => {
-  fs.createReadStream(path.resolve(__dirname, file)).pipe(fs.createWriteStream(path.resolve(process.cwd(), file)));
-});
+Promise
+  .all(
+    ['webpack.config.js', 'webpack.config.prod.js']
+      .map(file => {
+        const src = path.resolve(__dirname, '..', file);
+        const dst = path.resolve(process.cwd(), file);
+
+        return ncp(src, dst)
+          .then(() => {
+            if (file === 'webpack.config.js') {
+              return codemod(dst, result.wserve && result.wserve['x-replace'] || []);
+            } else if (file === 'webpack.config.prod.js') {
+              return codemod(dst, result.build && result.wbuild['x-replace'] || []);
+            }
+          });
+      })
+  );
 
 function printDiff(obj1, obj2, property) {
   console.log(`${chalk.green(property)}:`);

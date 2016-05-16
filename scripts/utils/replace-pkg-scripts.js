@@ -12,12 +12,19 @@ module.exports = function(_pkg) {
     .keys(pkg.scripts)
     .forEach(function(key) {
       const script = pkg.scripts[key];
-      const result = replaceScript(script, 'wbuild', ['webpack', '--config', 'webpack.config.prod.js']);
+      
+      proceed('wserve', ['webpack-dev-server', '--config', 'webpack.config.js']);
+      proceed('wbuild', ['webpack', '--config', 'webpack.config.prod.js']);
 
-      if (result) {
-        pkg.scripts[key] = result.script;
-        args[result.args._] = result.args;
-        delete result.args._;
+      function proceed(target, replacement) {
+        const result = replaceScript(script, target, replacement);
+
+        if (result) {
+          pkg.scripts[key] = result.script;
+          args[result.args._] = result.args;
+
+          delete result.args._;
+        }
       }
     });
 
@@ -30,7 +37,7 @@ module.exports = function(_pkg) {
 function replaceScript(script, target, replacement) {
   var xs = shellUtils.parse(script);
 
-  var buildInd = extract(xs, 'wbuild');
+  var buildInd = extract(xs, target);
 
   if (buildInd) {
     var args = minimist(xs.slice(buildInd[0], buildInd[1]));

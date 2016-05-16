@@ -85,7 +85,7 @@ function compareDirectory(name, t, sample, dest, files, result) {
 }
 
 function reverse(dest) {
-  return execa('node', [path.resolve(__dirname, '..', 'reverse')], { cwd: dest })
+  return execa('node', [path.resolve(__dirname, '..', 'scripts', 'reverse')], { cwd: dest })
     .then(result => {
       console.log(result.stdout);
       console.log(result.stderr);

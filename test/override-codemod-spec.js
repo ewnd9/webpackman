@@ -1,15 +1,9 @@
 import test from 'ava';
 
-import pify from 'pify';
-import fs from 'fs';
-const readFile = pify(fs.readFile);
-
-import codemod from '../utils/codemod';
-
-import jscodeshift from 'jscodeshift';
+import { transform } from '../scripts/utils/codemod-file';
 
 test('refactor code with jscodeshift', async t => {
-  const file = await readFile('./fixtures/config.sample.js', 'utf-8');
+  const filePath = './fixtures/config.sample.js'
 
   const queries = [
     'entry.app=./frontend/app.js',
@@ -17,7 +11,7 @@ test('refactor code with jscodeshift', async t => {
     'output.path=./public'
   ];
 
-  const res = codemod({ source: file }, { jscodeshift }, {}, queries);
+  const res = await transform(filePath, queries);
 
   t.regex(res, /frontend\/app\.js/g);
   t.regex(res, /frontend\/index\.html/g);

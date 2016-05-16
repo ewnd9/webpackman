@@ -4,7 +4,6 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
-var argv = require('minimist')(process.argv.slice(2));
 var cwd = process.cwd();
 
 var config = {
@@ -91,9 +90,5 @@ var config = {
   }
 };
 
-require('./utils/override-config-properties')(config, argv['x-replace']);
+require('./scripts/utils/override-object-properties')(config);
 module.exports = config;
-
-/*
-x wserve --x-replace="entry.app=./frontend/app.js" --x-replace="plugins.HtmlWebpackPlugin.template=./frontend/index.html --x-replace="output.path=./public"
-*/

@@ -54,7 +54,12 @@ function genScreens(dir) {
 
 function npmInstall(dir) {
   console.log(`${dir} npm install`);
-  return execa('npm', ['--cache-min', '9999999', 'install'], { cwd: dir });
+
+  return (
+    process.env.TRAVIS === true ?
+      execa('npm', ['install'], { cwd: dir }) :
+      execa('npm', ['--cache-min', '9999999', 'install'], { cwd: dir })
+  );
 }
 
 function npmBuild(dir) {
@@ -68,16 +73,17 @@ function cpAndClean(sample, dest) {
       console.log(`${dest} rm node_modules|dist|screenshots`);
 
       return Promise.all([
-        rimraf(`${dest}/node_modules`),
+        rimraf(`${dest}/node_modules`),  // ¯\_(ツ)_/¯ glob not working
         rimraf(`${dest}/dist`),
         rimraf(`${dest}/screenshots`),
         readFile(`${dest}/package.json`)
           .then(data => {
             const pkg = JSON.parse(data);
             pkg.devDependencies.webpackman = `file://${path.resolve(__dirname, '..', '..')}`;
+
             return writeFile(`${dest}/package.json`, JSON.stringify(pkg, null, 2));
           })
-      ]); // ¯\_(ツ)_/¯
+      ]);
     });
 }
 

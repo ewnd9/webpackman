@@ -8,13 +8,12 @@
     "test": "ava"
   },
   "bin": {
-    "wserve": "serve.js",
-    "wbuild": "build.js"
+    "wserve": "scripts/serve.js",
+    "wbuild": "scripts/build.js",
+    "webpackman": "scripts/webpackman.js"
   },
   "files": [
-    "utils",
-    "build.js",
-    "serve.js",
+    "scripts",
     "webpack.config.js",
     "webpack.config.prod.js"
   ],
@@ -39,6 +38,7 @@
     "html-webpack-plugin": "^1.6.0",
     "image-loader": "0.0.1",
     "imports-loader": "^0.6.5",
+    "jscodeshift": "^0.3.20",
     "minimist": "^1.2.0",
     "object-diff": "0.0.2",
     "postcss-cssnext": "^2.4.0",
