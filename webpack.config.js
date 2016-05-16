@@ -1,3 +1,5 @@
+'use strict';
+
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -5,23 +7,17 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var argv = require('minimist')(process.argv.slice(2));
 var cwd = process.cwd();
 
-var entry = path.join(cwd, argv['x-entry'] || 'src/index.js');
-var html = path.join(cwd, argv['x-html'] || 'src/index.html');
-var output = path.join(cwd, argv['x-dist'] || 'dist');
-var vendors = argv['x-vendors'] && argv['x-vendors'].split(',') || [];
-var publicPath = argv['x-public-path'] || '/';
-
-module.exports = {
+var config = {
   entry: {
-    app: entry,
-    vendors: vendors
+    app: path.join(cwd, 'src/index.js'),
+    vendors: []
   },
   devtool: 'cheap-module-source-map',
   output: {
     filename: '[name].bundle.js',
     sourceMapFilename: '[file].map',
-    path: output,
-    publicPath: publicPath
+    path: path.join(cwd, 'dist'),
+    publicPath: '/'
   },
   resolve: {
     root: [
@@ -67,7 +63,7 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
-      template: html,
+      template: path.join(cwd, 'src/index.html'),
       inject: 'body'
     }),
     new webpack.DefinePlugin({
@@ -87,10 +83,17 @@ module.exports = {
     ];
   },
   devServer: {
-    contentBase: output,
+    contentBase: path.join(cwd, 'dist'),
     noInfo: true,
     hot: true,
     inline: true,
     historyApiFallback: true
   }
 };
+
+require('./utils/override-config-properties')(config, argv['x-replace']);
+module.exports = config;
+
+/*
+x wserve --x-replace="entry.app=./frontend/app.js" --x-replace="plugins.HtmlWebpackPlugin.template=./frontend/index.html --x-replace="output.path=./public"
+*/

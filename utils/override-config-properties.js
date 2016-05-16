@@ -1,43 +1,46 @@
 'use strict';
 
-var clone = require('clone');
+var path = require('path');
+var cwd = process.cwd();
 
-module.exports = function(config, replacementArray) {
-  var result = clone(config);
+var overrider = require('./overrider');
 
-  replacementArray.forEach(function(str) {
-    if (!str || typeof str === 'boolean') {
-      return;
-    }
-
-    replaceProperty(result, str);
-  });
-
-  return result;
+module.exports = function(config, argv) {
+  var queries = Array.isArray(argv) ? argv : [argv];
+  overrider(queries, overridePlugin.bind(null, config), overrideProperty.bind(null, config));
 };
 
-function replaceProperty(obj, str) {
-  var d0 = str.split('=');
+function overridePlugin(config, plugin, property, value, str) {
+  var pluginObj = config.plugins.find(p => Object.getPrototypeOf(p).constructor.name === plugin);
 
-  var path = d0[0];
-  var value = d0[1];
+  if (plugin === 'HtmlWebpackPlugin') {
+    plugin.options[property] = getValue(value);
+  } else {
+    throw new Error(pluginFnName + ' overriding is not avaliable right now')
+  }
+}
 
-  var curr = obj;
+function overrideProperty(config, path, value, str) {
+  var curr = config;
+  var last = path[path.length - 1];
 
-  var d1 = path.split('.');
-  var last = d1[d1.length - 1];
-
-  d1.slice(0, d1.length - 1).forEach(function(part) {
-    if (curr[part]) {
-      curr = curr[part];
-    } else {
-      throw new Error('"' + str + '" not found in config');
-    }
-  });
+  path
+    .slice(0, path.length - 1)
+    .forEach(function(part) {
+      if (curr[part]) {
+        curr = curr[part];
+      } else {
+        throw new Error('"' + str + '" not found in config');
+      }
+    });
 
   if (curr[last]) {
-    curr[last] = value;
+    curr[last] = getValue(value);
   } else {
     throw new Error('"' + str + '" not found in config');
   }
-};
+}
+
+function getValue(value) {
+  return value.indexOf('./') === 0 ? path.resolve(cwd, value) : value;
+}
