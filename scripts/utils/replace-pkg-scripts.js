@@ -35,15 +35,15 @@ module.exports = function(_pkg) {
 };
 
 function replaceScript(script, target, replacement) {
-  var xs = shellUtils.parse(script);
+  const xs = shellUtils.parse(script);
 
-  var buildInd = extract(xs, target);
+  const buildInd = extract(xs, target);
 
   if (buildInd) {
-    var args = minimist(xs.slice(buildInd[0], buildInd[1]));
+    const args = minimist(xs.slice(buildInd[0], buildInd[1]));
 
-    var before = xs.slice(0, buildInd[0]);
-    var after = xs.slice(buildInd[1]);
+    const before = xs.slice(0, buildInd[0]);
+    const after = xs.slice(buildInd[1]);
 
     return {
       script: shellUtils.unparse(before.concat(replacement).concat(after)),
@@ -55,7 +55,7 @@ function replaceScript(script, target, replacement) {
 };
 
 function extract(xs, token) {
-  var index = xs.indexOf(token);
+  const index = xs.indexOf(token);
 
   if (index === -1) {
     return null;

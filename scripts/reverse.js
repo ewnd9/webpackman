@@ -11,7 +11,7 @@ const replaceDependencies = require('./utils/replace-pkg-dependencies');
 
 const codemod = require('./utils/codemod-file');
 
-const pkgPath = process.cwd() + '/package.json';
+const pkgPath = `${process.cwd()}/package.json`;
 
 const pkg0 = require(pkgPath);
 const old = clone(pkg0);
@@ -27,7 +27,7 @@ const pkg = replaceDependencies(_pkg);
 printDiff(pkg, old, 'scripts');
 printDiff(pkg, old, 'devDependencies');
 
-fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n', 'utf-8');
+fs.writeFileSync(pkgPath, `${JSON.stringify(pkg, null, 2)}\n`, 'utf-8');
 
 Promise
   .all(
@@ -54,11 +54,11 @@ function printDiff(obj1, obj2, property) {
 
   Object.keys(res).forEach(function(key) {
     if (obj2[property][key]) {
-      console.log(chalk.red('- \"' + key + '\"', obj2[property][key]));
+      console.log(chalk.red(`- \"${key}\"`, obj2[property][key]));
     }
 
     if (obj1[property][key]) {
-      console.log(chalk.green('+ \"' + key + '\"', obj1[property][key]));
+      console.log(chalk.green(`+ \"${key}\"`, obj1[property][key]));
     }
   });
 }

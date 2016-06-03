@@ -20,9 +20,9 @@ function overrideProperty(ast, j, path, value) {
       return node.key && node.key.name === path[path.length - 1];
     })
     .filter(p => {
-      var curr = p;
+      let curr = p;
 
-      for (var i = path.length - 2 ; i >= 0 ; i--) {
+      for (let i = path.length - 2 ; i >= 0 ; i--) {
         if (curr.parent &&
             curr.parent.parent &&
             curr.parent.parent.value.key &&

@@ -1,13 +1,13 @@
 'use strict';
 
-var clone = require('clone');
-var sortedObject = require('sorted-object');
+const clone = require('clone');
+const sortedObject = require('sorted-object');
 
-var path = require('path');
-var originalPkg = require(path.resolve(__dirname, '..', '..', 'package.json'));
+const path = require('path');
+const originalPkg = require(path.resolve(__dirname, '..', '..', 'package.json'));
 
 module.exports = function(_pkg) {
-  var pkg = clone(_pkg);
+  const pkg = clone(_pkg);
 
   pkg.devDependencies = pkg.devDependencies || {};
 

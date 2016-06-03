@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
-var spawn = require('child_process').spawn;
-var bin = require.resolve('webpack/bin/webpack.js');
+'use strict';
 
-var path = require('path');
-var config = path.resolve(__dirname, '..', 'webpack.config.prod.js');
+const spawn = require('child_process').spawn;
+const bin = require.resolve('webpack/bin/webpack.js');
 
-var argv = process.argv.slice(2);
+const path = require('path');
+let config = path.resolve(__dirname, '..', 'webpack.config.prod.js');
+
+let argv = process.argv.slice(2);
 
 if (argv[0] === '--config') {
   config = argv[1];
