@@ -3,7 +3,7 @@ import test from 'ava';
 import { transform } from '../scripts/utils/codemod-file';
 
 test('refactor code with jscodeshift', async t => {
-  const filePath = './fixtures/config.sample.js'
+  const filePath = '../webpack.config.js';
 
   const queries = [
     'entry.app=./frontend/app.js',
