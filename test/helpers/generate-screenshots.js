@@ -16,21 +16,13 @@ const fs = require('fs');
 const readFile = pify(fs.readFile);
 const writeFile = pify(fs.writeFile);
 
-
-function genScreens(dir) {
-  const dest = `${dir}/screenshots`;
-
-  const port = 8080;
-  const useServer = true;
-
+function genScreens(root, dest, port = 8080, useServer = true) {
   const address = `http://localhost:${port}/`;
-  const root = `${dir}/dist`;
-
   let server;
 
   return mkdirp(dest)
     .then(() => {
-      console.log(`${dir} pageres`);
+      console.log(`${root} pageres`);
 
       if (useServer) {
         server = http.createServer(ecstatic({ root })).listen(port);
@@ -50,7 +42,7 @@ function genScreens(dir) {
           }
         });
     });
-};
+}
 
 function npmInstall(dir) {
   console.log(`${dir} npm install`);

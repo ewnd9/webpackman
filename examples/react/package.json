@@ -2,8 +2,8 @@
   "name": "webpackman-test-react",
   "version": "0.0.0",
   "scripts": {
-    "start": "wserve",
-    "build": "rm -rf dist && NODE_ENV=production wbuild --x-vendors=react"
+    "start": "webpack-dev-server",
+    "build": "rm -rf dist && NODE_ENV=production webpack --config webpack.config.prod.js"
   },
   "private": true,
   "author": "ewnd9 <ewndnine@gmail.com>",
@@ -16,6 +16,6 @@
     "babel-preset-stage-0": "^6.5.0",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
-    "webpackman": "file:///home/ewnd9/github/webpackman"
+    "webpackman": "../../"
   }
 }

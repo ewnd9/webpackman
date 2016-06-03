@@ -1,93 +1,47 @@
 import test from 'ava';
+
+import fs from 'fs';
 import path from 'path';
 import pify from 'pify';
-import execa from 'execa';
 
-import _imageDiff from 'image-diff';
-const imageDiff = pify(_imageDiff);
-
-import { genScreens, npmInstall, npmBuild, cpAndClean } from './helpers/generate-screenshots';
+import { genScreens, npmInstall, npmBuild } from './helpers/generate-screenshots';
 import cmpScreens from './helpers/compare-screenshots';
-import cmpScripts from './helpers/compare-scripts';
 
-test('asd', async t => {
+test.serial('append-child example project', async t => {
   await testExampleProject(t, 'append-child');
+});
+
+test.serial('react example project', async t => {
+  await testExampleProject(t, 'react');
 });
 
 async function testExampleProject(t, testProject) {
   const sample = path.resolve(__dirname, '..', 'examples', testProject);
   const date = Date.now();
 
-  const sampleCopy = `/tmp/clone-${date}`;
-  const dest = `/tmp/${date}`;
-  const destReverse = `/tmp/reverse-${date}`;
+  await npmInstall(sample);
+  await npmBuild(sample);
 
-  await cpAndClean(sample, sampleCopy); // first copy of the project without screenshots
+  const dest = `/tmp/screens-${date}`;
+  const screens = `${sample}/screenshots`;
+  const distBuild = `${sample}/dist`;
 
-  await npmInstall(sampleCopy); // build dist files
-  await npmBuild(sampleCopy); // build dist files
+  await genScreens(distBuild, dest);
+  const result = await cmpScreens(screens, `${dest}`);
 
-  // ==
+  for (const r of result) {
+    if (process.env.NODE_ENV === 'test-update') {
+      await pify(fs.rename)(r.actual, r.expected);
+    } else {
+      if (!r.result) {
+        const imgur = require('imgur');
+        imgur.setClientId('a9e8e4383e6dfa2'); // record-desktop
 
-  await cpAndClean(sample, dest); // second copy of the project without screenshots
+        console.log((await imgur.uploadFile(r.diff)).data.link);
+        console.log((await imgur.uploadFile(r.actual)).data.link);
+      }
 
-  await npmInstall(dest);
-  await npmBuild(dest);
-
-  await compareScreens(t, sample, dest); // comparing the original files (reference screenshots stored in git) with the second copy screenshots
-
-  // await compareScripts(t, `${sampleCopy}/dist`, `${dest}/dist`); // comparing the first copy dist files with the second copy dist files
-  // can't compare scripts right now because hash is generated based on content+path
-
-  // ==
-
-  await cpAndClean(sample, destReverse); // third copy of the project
-  await reverse(destReverse); // reverse webpackman dependencies to project
-
-  await npmInstall(destReverse);
-  await npmBuild(destReverse);
-
-  await compareScreens(t, sample, destReverse); //
-
-  // await compareScripts(t, `${sampleCopy}/dist`, `${destReverse}/dist`);
-  // can't compare scripts right now because hash is generated based on content+path
-}
-
-function compareScreens(t, sample, dest) {
-  return genScreens(dest)
-    .then(() => cmpScreens(`${sample}/screenshots`, `${dest}/screenshots`))
-    .then(({ files, result }) => compareDirectory('screens', t, sample, dest, files, result));
-}
-
-function compareScripts(t, sample, dest) {
-  return cmpScripts(sample, dest)
-    .then(({ files, result, testFiles }) => {
-      return compareDirectory('scripts', t, sample, dest, files, result);
-    });
-}
-
-function compareDirectory(name, t, sample, dest, files, result) {
-  const errors = [];
-  t.truthy(files.length > 0);
-
-  files.forEach((file, i) => {
-    const res = result[i];
-    console.log(`${name} :: ${sample}/${file}: ${res}`);
-
-    if (!res) {
-      errors.push(file);
+      t.truthy(r.result, `${r.actual} didn't match with ${r.expected}`);
     }
-  });
-
-  if (errors.length > 0) {
-    t.fail(`${errors.join(', ')} don't match`);
   }
 }
-
-function reverse(dest) {
-  return execa('node', [path.resolve(__dirname, '..', 'scripts', 'reverse')], { cwd: dest })
-    .then(result => {
-      console.log(result.stdout);
-      console.log(result.stderr);
-    });
-};

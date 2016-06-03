@@ -1,12 +1,12 @@
 'use strict';
 
-var path = require('path');
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-var cwd = process.cwd();
+const cwd = process.cwd();
 
-var config = {
+const config = {
   entry: {
     app: path.join(cwd, 'src/index.js'),
     vendors: []
@@ -90,5 +90,4 @@ var config = {
   }
 };
 
-require('./scripts/utils/override-object-properties')(config);
 module.exports = config;
