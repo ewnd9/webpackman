@@ -1,6 +1,6 @@
 {
   "name": "webpackman",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Shared webpack config files",
   "scripts": {
     "lint": "eslint 'test/**/*.js' 'scripts/**/*.js' '*.js'",
