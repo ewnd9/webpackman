@@ -61,7 +61,7 @@ static loaders
 
 ## Changelog
 
-- [`v0.6.0`](https://github.com/ewnd9/webpackman/tree/v0.6.0) - replace overriding logic, add the reverse command
+- [`v0.6.0`](https://github.com/ewnd9/webpackman/tree/v0.6.0) - remove all overloading, leave only webpack config files
 - [`v0.5.0`](https://github.com/ewnd9/webpackman/tree/v0.5.0) - add x-public-path
 - [`v0.1.0`](https://github.com/ewnd9/webpackman/tree/v0.1.0) - initial version with my opinionated react config  
 
