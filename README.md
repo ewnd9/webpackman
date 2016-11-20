@@ -61,6 +61,7 @@ static loaders
 
 ## Changelog
 
+- [`v0.7.0`](https://github.com/ewnd9/webpackman/tree/v0.7.0) - hash -> chunkhash
 - [`v0.6.0`](https://github.com/ewnd9/webpackman/tree/v0.6.0) - remove all overloading, leave only webpack config files
 - [`v0.5.0`](https://github.com/ewnd9/webpackman/tree/v0.5.0) - add x-public-path
 - [`v0.1.0`](https://github.com/ewnd9/webpackman/tree/v0.1.0) - initial version with my opinionated react config  

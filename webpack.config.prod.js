@@ -10,7 +10,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const config = require(__dirname + '/webpack.config');
 
 config.devtool = 'source-map';
-config.output.filename = '[name].bundle.[hash].js';
+config.output.filename = '[name].bundle.[chunkhash].js';
 
 const prodPlugins = config.plugins.reduce((total, curr) => {
   if (!(curr instanceof webpack.HotModuleReplacementPlugin)) {
@@ -20,7 +20,7 @@ const prodPlugins = config.plugins.reduce((total, curr) => {
   return total;
 }, [
   new webpack.optimize.OccurenceOrderPlugin(),
-  new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.[hash].js'),
+  new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.[chunkhash].js'),
   new ExtractTextPlugin('styles.css', '[name].[contenthash].css')
 ]).concat([
   new webpack.optimize.UglifyJsPlugin({
